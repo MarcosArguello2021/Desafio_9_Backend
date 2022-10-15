@@ -1,41 +1,15 @@
-const routerProducto = require('express').Router();
-const { getAll,
-    getProductoById,
-    guardarProducto,
-    updateProductoById,
-    deleteProductoById, } = require('../controllers/productos.js');
 
-routerProducto.get('/', async (req, res) => {
+import { Router } from "express";
+const chatProducto = Router();
+import { productosRandom } from '../utils/faker.js';
+
+chatProducto.get('/productos-test', async (req, res) => {
     try {
-        res.json(await getAll());
+        const productosFaker = productosRandom();
+        res.json(productosFaker);
     } catch (err) {
         res.status(500).send(`No se puede recuperar los datos ${err}`);
     }
 });
 
-routerProducto.get('/:id', async (req, res) => {
-    try {
-        res.json(await getProductoById(Number(req.params.id)))
-    } catch (err) {
-        res.status(200).json({ error: 'producto no encontrado' });
-    }
-
-})
-
-routerProducto.post('/', async (req, res) => {
-    res.json(await guardarProducto(req, res))
-})
-
-routerProducto.put('/:id', async (req, res) => {
-    try {
-        res.json(await updateProductoById(Number(req.params.id), req.body))
-    } catch (err) {
-        res.status(200).json({ error: 'producto no encontrado' });
-    }
-})
-
-routerProducto.delete('/:id', async (req, res) => {
-    res.json(await deleteProductoById(Number(req.params.id)))
-})
-
-module.exports = routerProducto;
+export default chatProducto;
